@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAPHY FUN ZONE 🎮</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#1a0033;color:white;text-align:center}
+nav{background:#ff0066;padding:14px;display:flex;justify-content:center;gap:16px;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;position:sticky;top:0}
+nav a{color:white;text-decoration:none;font-weight:bold;font-size:15px;flex-shrink:0}
+.hero{padding:50px 20px;background:linear-gradient(135deg,#ff0066,#7b00ff,#00ccff)}
+.hero h1{font-size:45px}
+.hero p{margin:15px 0;font-size:18px;opacity:0.9}
+.btn{background:white;color:#ff0066;padding:13px 28px;border-radius:30px;text-decoration:none;font-weight:bold;display:inline-block;margin:5px}
+.btn2{border:2px solid white;color:white;padding:11px 28px;border-radius:30px;text-decoration:none;font-weight:bold;display:inline-block;margin:5px}
+.section{padding:35px 15px;max-width:700px;margin:auto}
+.card{background:#2a0052;padding:25px;border-radius:18px;margin:15px 0;border:1px solid #ff0066}
+.card h2{color:#ffcc00;margin-bottom:12px}
+.card p{line-height:1.6;color:#ddd}
+.big{font-size:60px;margin:10px 0}
+button{background:#ffcc00;color:black;border:none;padding:12px 22px;border-radius:25px;font-weight:bold;font-size:16px;margin:5px;cursor:pointer}
+button:hover{background:white}
+input{padding:12px;border-radius:20px;border:none;width:80%;max-width:300px;text-align:center;font-size:16px;margin:10px 0}
+.result{font-size:20px;font-weight:bold;margin-top:12px;color:#ffcc00;min-height:28px}
+.score{color:#00ffcc;font-weight:bold}
+footer{padding:25px;background:#0d001a;color:#aaa}
+footer a{color:#ffcc00;text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="#home">🏠 Home</a>
+<a href="#game1">🎲 Guessing</a>
+<a href="#game2">✂️ Rock Paper</a>
+<a href="#quiz">🧠 Quiz</a>
+<a href="#joke">😂 Jokes</a>
+</nav>
+
+<div class="hero" id="home">
+<h1>🎮 TAPHY FUN ZONE</h1>
+<p>The Most Fun Website in Homabay! Play Games, Test Your Brain, Laugh!</p>
+<a class="btn" href="#game1">Play Now 🎲</a>
+<a class="btn2" href="#quiz">Take Quiz 🧠</a>
+<p style="margin-top:15px">⭐ 100% FREE | No Download | Play on Phone</p>
+</div>
+
+<!-- GAME 1 - GUESSING -->
+<div class="section" id="game1">
+<div class="card">
+<h2>🎲 1. Number Guessing Game</h2>
+<p>I'm thinking of a number between 1 and 10. Can you guess it?</p>
+<div class="big">🤔</div>
+<input type="number" id="guessInput" placeholder="Enter 1 - 10">
+<br>
+<button onclick="checkGuess()">Guess!</button>
+<button onclick="newGame()">New Game</button>
+<div class="result" id="guessResult">Good luck!</div>
+<p class="score" id="guessScore">Score: 0 | Tries: 0</p>
+</div>
+</div>
+
+<!-- GAME 2 - ROCK PAPER SCISSORS -->
+<div class="section" id="game2">
+<div class="card">
+<h2>✂️ 2. Rock Paper Scissors</h2>
+<p>Beat the computer!</p>
+<div class="big" id="rpsEmoji">👊 ✋ ✌️</div>
+<button onclick="playRPS('Rock')">🪨 Rock</button>
+<button onclick="playRPS('Paper')">📄 Paper</button>
+<button onclick="playRPS('Scissors')">✂️ Scissors</button>
+<div class="result" id="rpsResult">Choose one to start!</div>
+<p class="score" id="rpsScore">You: 0 | Computer: 0</p>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+<div class="card">
+<h2>🧠 3. Quick Quiz - Kenya</h2>
+<p id="quizQ">What is the capital city of Kenya?</p>
+<button onclick="checkQuiz('Nairobi')">Nairobi</button>
+<button onclick="checkQuiz('Kisumu')">Kisumu</button>
+<button onclick="checkQuiz('Mombasa')">Mombasa</button>
+<div class="result" id="quizResult"></div>
+<p class="score" id="quizScore">Quiz Score: 0 / 3</p>
+</div>
+</div>
+
+<!-- JOKES -->
+<div class="section" id="joke">
+<div class="card">
+<h2>😂 4. Funny Jokes</h2>
+<p id="jokeText" style="font-size:18px;">Click the button for a funny joke!</p>
+<button onclick="newJoke()">Tell Me A Joke 😂</button>
+</div>
+</div>
+
+<div class="section">
+<div class="card">
+<h2>🏆 Leaderboard</h2>
+<p>🥇 Taphy - 100 Points<br>🥈 You - Play to beat him!<br>🥉 Your Friend - 50 Points</p>
+<br>
+<button onclick="alert('Share this website with your friends!')">Share With Friends 📤</button>
+</div>
+</div>
+
+<footer>
+<h3>TAPHY FUN ZONE</h3>
+<p>Homabay, Kenya | Made by Taphy Samson</p>
+<p><a href="https://wa.me/254700000000">WhatsApp Me</a> | <a href="mailto:achien512r@gmail.com">Email Me</a></p>
+<p style="margin-top:10px">© 2026 Taphy Fun Zone. All Rights Reserved.</p>
+</footer>
+
+<script>
+let secret = Math.floor(Math.random()*10)+1;
+let guessScore=0, tries=0;
+function checkGuess(){
+let g = document.getElementById('guessInput').value;
+if(!g){document.getElementById('guessResult').innerText='Enter a number first!';return;}
+tries++;
+if(g==secret){guessScore+=10;document.getElementById('guessResult').innerText='🎉 CORRECT! You are a genius!';secret=Math.floor(Math.random()*10)+1;}
+else if(g<secret){document.getElementById('guessResult').innerText='📈 Too LOW! Try higher';}
+else{document.getElementById('guessResult').innerText='📉 Too HIGH! Try lower';}
+document.getElementById('guessScore').innerText='Score: '+guessScore+' | Tries: '+tries;
+}
+function newGame(){secret=Math.floor(Math.random()*10)+1;document.getElementById('guessResult').innerText='New number! Good luck!';}
+
+let you=0, comp=0;
+function playRPS(choice){
+let options=['Rock','Paper','Scissors'];
+let c = options[Math.floor(Math.random()*3)];
+document.getElementById('rpsEmoji').innerText='You: '+choice+' vs Computer: '+c;
+let win='';
+if(choice==c){win='🤝 DRAW!';}
+else if((choice=='Rock'&&c=='Scissors')||(choice=='Paper'&&c=='Rock')||(choice=='Scissors'&&c=='Paper')){win='🎉 YOU WIN!';you++;}
+else{win='😢 COMPUTER WINS!';comp++;}
+document.getElementById('rpsResult').innerText=win;
+document.getElementById('rpsScore').innerText='You: '+you+' | Computer: '+comp;
+}
+
+let quizIndex=0, quizScore=0;
+let questions=[
+{q:'What is the capital city of Kenya?',a:'Nairobi',o:['Nairobi','Kisumu','Mombasa']},
+{q:'Which lake is in Homabay?',a:'Lake Victoria',o:['Lake Naivasha','Lake Victoria','Lake Baringo']},
+{q:'What is 5 + 5?',a:'10',o:['9','10','11']}
+];
+function checkQuiz(ans){
+if(ans==questions[quizIndex].a){quizScore++;document.getElementById('quizResult').innerText='✅ Correct!';}
+else{document.getElementById('quizResult').innerText='❌ Wrong! Answer was '+questions[quizIndex].a;}
+document.getElementById('quizScore').innerText='Quiz Score: '+quizScore+' / 3';
+quizIndex++;
+if(quizIndex<questions.length){
+setTimeout(()=>{
+document.getElementById('quizQ').innerText=questions[quizIndex].q;
+let btns=document.querySelectorAll('#quiz button');
+btns[0].innerText=questions[quizIndex].o[0];
+btns[1].innerText=questions[quizIndex].o[1];
+btns[2].innerText=questions[quizIndex].o[2];
+btns[0].onclick=()=>checkQuiz(questions[quizIndex].o[0]);
+btns[1].onclick=()=>checkQuiz(questions[quizIndex].o[1]);
+btns[2].onclick=()=>checkQuiz(questions[quizIndex].o[2]);
+document.getElementById('quizResult').innerText='';
+},1200);
+}else{
+setTimeout(()=>{document.getElementById('quizQ').innerText='Quiz Finished! Your score: '+quizScore+'/3 🎉';},1200);
+}
+}
+
+let jokes=[
+'Why did the chicken cross the road? To get to the other side! 😂',
+'Why did Taphy bring a ladder to school? To go to high school! 🤣',
+'What do you call a fish without eyes? A fsh! 🐟',
+'Why did the math book look sad? It had too many problems! 📚',
+'What does a Kenyan say when it rains? Mvua imekuja! 🌧️'
+];
+function newJoke(){
+let j=jokes[Math.floor(Math.random()*jokes.length)];
+document.getElementById('jokeText').innerText=j;
+}
+</script>
+
+</body>
+</html>
